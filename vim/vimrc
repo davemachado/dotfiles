@@ -1,0 +1,49 @@
+"Important Key Mapping
+let mapleader = ','
+inoremap <leader>s <C-c>:w<cr>
+inoremap <leader>w <C-c>:w<cr>
+inoremap <leader>wq <C-c>:wq<cr>
+nnoremap <leader>s :w<cr>
+nnoremap <leader>w :w<cr>
+nnoremap <leader>q :q<cr>
+nnoremap <leader>wq :wq<cr>
+nnoremap <leader>copy :%w !pbcopy<cr>
+nnoremap <leader>k gcc
+nnoremap <leader>, :b 
+nnoremap <leader>. :bd<cr>
+
+"General
+set number
+set relativenumber
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set nocompatible
+set ignorecase
+set smartcase
+set cul
+hi CursorLine term=none cterm=none ctermbg=3
+noremap j gj
+noremap k gk
+inoremap <Down> gj
+inoremap <Up> gk
+
+"Backup
+set backup
+set backupdir=~/.dotfiles/vim/vim/backup
+set directory=~/.dotfiles/vim/vim/tmp
+
+"Split Screen Controls
+nnoremap <leader>sv :vsplit<cr>
+nnoremap <leader>sh :split<cr>
+noremap <C-l> <C-w>l
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+
+"Pathogen
+execute pathogen#infect()
+syntax on 
+filetype plugin indent on
+
