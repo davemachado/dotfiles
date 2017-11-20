@@ -45,9 +45,10 @@ filetype plugin indent on
 function CheckForTemplate()
     let extension = expand('%:e')
     let skelfile = $DOTFILES . "/vim/templates/skel." . extension
-    echom skelfile
     if filereadable(skelfile)
         execute "0read " . fnameescape(skelfile)
+    else
+        echom "could not load " . "." . extension . " template"
     endif
 endf
 
