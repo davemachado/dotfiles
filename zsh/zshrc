@@ -51,7 +51,6 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 
 # Syntax Highlighting installed from Homebrew
-source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 export GEM_HOME=$HOME/.gem
 
 # Add Z to env
@@ -65,3 +64,4 @@ PATH=/Users/dmachado/.Pokemon-Terminal:$PATH
 export PATH="/usr/local/opt/curl/bin:$PATH"
 
 source $ZSH/oh-my-zsh.sh
+source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
