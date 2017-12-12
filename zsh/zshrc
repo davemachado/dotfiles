@@ -54,7 +54,7 @@ export PATH=$PATH:$GOROOT/bin
 export GEM_HOME=$HOME/.gem
 
 # Add Z to env
-. $HOME/bin/z.sh
+. $HOME/.z.sh
 
 eval "$(rbenv init -)"
 alias svr="ssh dev -t \"tmux attach || tmux\""
@@ -64,4 +64,4 @@ PATH=/Users/dmachado/.Pokemon-Terminal:$PATH
 export PATH="/usr/local/opt/curl/bin:$PATH"
 
 source $ZSH/oh-my-zsh.sh
-source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $HOME/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
