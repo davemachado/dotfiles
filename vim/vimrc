@@ -24,11 +24,6 @@ set nocompatible
 set ignorecase
 set smartcase
 
-"Backup
-set backup
-set backupdir=~/.dotfiles/vim/sys/backup
-set directory=~/.dotfiles/vim/sys/tmp
-
 "Split Screen Controls
 nnoremap <leader>sv :vsplit<cr>
 nnoremap <leader>sh :split<cr>
