@@ -1,3 +1,2 @@
-vim/sys/tmp
-vim/sys/backup
+vim/sys/*
 vim/bundle/*
