@@ -11,7 +11,7 @@ fi
 if [ -d ~/.vim ]; then
 	mv ~/.vim ~/.vim-backup
 fi
-ln -s $dotdir/vim ~/.vim
+ln -s $dotdir/vim/vim ~/.vim
 
 if [ -f ~/.vimrc ]; then
 	mv ~/.vimrc ~/.vimrc-backup
