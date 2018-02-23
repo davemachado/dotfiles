@@ -18,15 +18,6 @@ if [ -f ~/.vimrc ]; then
 fi
 ln -s $dotdir/vim/vimrc ~/.vimrc
 
-if [ -f ~/.zshrc ]; then
-	mv ~/.zshrc ~/.zshrc-backup
-fi
-ln -s $dotdir/zsh/zshrc ~/.zshrc
-
-if [ ! -f ~/.local_aliases ]; then
-	touch ~/.local_aliases
-fi
-
 if [ ! -f ~/.z.sh ]; then
 	curl https://raw.githubusercontent.com/rupa/z/master/z.sh > ~/.z.sh
 fi
@@ -35,6 +26,15 @@ if [ -d ~/.oh-my-zsh ]; then
 	echo "$HOME/.oh-my-zsh already exists, skipping install"
 else
 	sh -c "\$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+fi
+
+if [ -f ~/.zshrc ]; then
+	mv ~/.zshrc ~/.zshrc-backup
+fi
+ln -s $dotdir/zsh/zshrc ~/.zshrc
+
+if [ ! -f ~/.local_aliases ]; then
+	touch ~/.local_aliases
 fi
 
 if [ -d ~/.zsh-syntax-highlighting ]; then
