@@ -18,6 +18,11 @@ if [ -f ~/.vimrc ]; then
 fi
 ln -s $dotdir/vim/vimrc ~/.vimrc
 
+if [ -f ~/.emacs ]; then
+	mv ~/.emacs ~/.emacs-backup
+fi
+ln -s $dotdir/emacs ~/.emacs
+
 if [ ! -f ~/.z.sh ]; then
 	curl https://raw.githubusercontent.com/rupa/z/master/z.sh > ~/.z.sh
 fi
