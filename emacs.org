@@ -1,0 +1,246 @@
+#+TITLE: Emacs Configuration
+#+AUTHOR: Dave Machado
+#+OPTIONS: toc:nil num:nil
+
+* Package Management
+
+[[https://github.com/jwiegley/use-package][use-package]] is a great tool to take the stress out of managing packages.
+
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+
+(setq package-enable-at-startup nil)
+(setq package-check-signature nil)
+(package-initialize)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (go-guru auto-complete exec-path-from-shell go-mode helm-swoop magit helm use-package evil-visual-mark-mode evil))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-when-compile
+  (require 'use-package))
+(setq use-package-always-ensure t)
+#+END_SRC
+
+* Evil Mode
+
+Emacs is a great operating system, lacking only a decent editor.
+To fix this, we bring Vim keybindings into the picture.
+
+#+BEGIN_SRC emacs-lisp
+;; Standard Vim keybindings
+(use-package evil
+  :config
+  (evil-mode t))
+
+;; Vim keybindings for Org mode
+(use-package evil-org
+  :ensure t
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme)))
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+#+END_SRC
+
+* Helm
+
+[[https://github.com/emacs-helm/helm][Helm]] is a fancy auto-complete package. It makes finishing M-x commands
+much less painful.
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm
+  :diminish helm-mode
+   :init (progn
+           (require 'helm-config)
+           (setq helm-candidate-number-limit 100)
+           ;; From https://gist.github.com/antifuchs/9238468
+           (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
+           helm-input-idle-delay 0.01  ; this actually updates things
+                                       ; reeeelatively quickly.
+           helm-yas-display-key-on-candidate t
+           helm-quick-update t)
+           (helm-mode)
+           (use-package helm-swoop
+           :bind ("M-i" . helm-swoop)))
+   :bind (("C-x b" . helm-mini)
+          ("C-h a" . helm-apropos)
+          ("M-y" . helm-show-kill-ring)
+          ("M-x" . helm-M-x)
+          ("C-x C-f" . helm-find-files))
+   :config (define-key helm-map (kbd "TAB" ) 'helm-execute-persistent-action ))
+(ido-mode -1)
+#+END_SRC
+
+* Magit
+
+[[https://github.com/magit/magit][Magit]] brings amazing interactivity
+with Git to Emacs. 
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit)
+#+END_SRC
+
+* Backups
+
+Keep all backup and auto-save files in one easy-to-find directory.
+
+#+BEGIN_SRC emacs-lisp
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+#+END_SRC
+
+* Themes
+
+For GUI Emacs, [[https://github.com/hadronzoo/theme-changer][theme-changer]] lets us toggle between light and dark
+themes depending on the time of day. Great for late-night working when a
+light theme would be too bright.
+
+#+BEGIN_SRC emacs-lisp
+;; Only load a theme if we are using GUI Emacs
+(when (display-graphic-p)
+(use-package apropospriate-theme)
+(use-package theme-changer
+  :init
+  (setq calendar-location-name "New York, NY"
+           calendar-latitude 41.8
+           calendar-longitude -73.59)
+  :config
+  (change-theme 'apropospriate-light 'apropospriate-dark)))
+#+END_SRC
+
+* Display Preferences
+
+As with any configuration, there are always display settings to tweak.
+
+#+BEGIN_SRC emacs-lisp
+;; Knowing the time is very handy
+(display-time)
+(setq display-time-format "%I:%M")
+
+;; Hurts my ears
+(setq ring-bell-function 'ignore)
+
+;; Set font to 13pt
+(set-face-attribute 'default nil :height 110 :width 'normal)
+
+;; Always display line and column numbers
+(setq line-number-mode t)
+(setq column-number-mode t)
+
+;; Turn off the blinking cursor
+(blink-cursor-mode -1)
+
+;; Enable show parenthesis
+(show-paren-mode t)
+
+;; Highlight current line
+(global-hl-line-mode t)
+
+;; Disable toolbar
+(tool-bar-mode -1)
+
+;; Disable menubar
+(menu-bar-mode -1)
+
+;; Disable scrollbar
+(toggle-scroll-bar -1) 
+
+;; Disable the splash screen
+(setq inhibit-splash-screen t)
+
+#+END_SRC
+
+* Org Mode
+
+I love [[https://orgmode.org/][Org mode]] - the power of an editor and note taker combined into one.
+
+#+BEGIN_SRC emacs-lisp
+;; Set Org mode TODO sequence
+(use-package org
+    :mode ("\\.org\\'" . org-mode)
+    :bind (("C-c l" . org-store-link)
+           ("C-c a" . org-agenda))
+    :config
+    (progn 
+    ;; Add more arguments for todo org mode
+    (setq org-todo-keywords
+        '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+    ;; Set closed time to done when in org mode
+    (setq org-log-done 'time)))
+#+END_SRC
+
+* Go Settings
+  
+I love Go. :gopher-dance:
+
+#+BEGIN_SRC emacs-lisp
+;; Standard Go things like syntax highlighting
+(use-package go-mode
+    :init
+    (setq gofmt-command "goimports")
+    (add-hook 'before-save-hook 'gofmt-before-save))
+
+;; Standard auto-complete package
+(use-package auto-complete)
+(defun auto-complete-for-go ()
+  (auto-complete-mode 1)
+    (auto-complete-mode 1))
+
+
+;; More complete auto-complete for Go-specific things
+(use-package go-autocomplete
+    :config
+    (add-hook 'go-mode-hook 'auto-complete-for-go)
+    (with-eval-after-load 'go-mode
+        (require 'go-autocomplete)))
+
+;; Go source code analysis tool
+(use-package go-guru
+  :demand t)
+#+END_SRC
+
+* Odds and Ends
+
+The usual random, one-off tweaks.
+
+#+BEGIN_SRC emacs-lisp
+;; I hopefully think I know what I am doing, so no warnings please
+(setq large-file-warning-threshold nil)
+
+;; Move files to trash when deleting
+(setq delete-by-moving-to-trash t)
+
+;; Transparently open compressed files
+(auto-compression-mode t)
+
+;; Save those precious keystrokes
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; Remove text in active region if inserting text
+(delete-selection-mode 1)
+
+;; Shell and emacs env variable values can differ on OS X, so sync them
+(use-package exec-path-from-shell
+  :init
+  (exec-path-from-shell-initialize))
+#+END_SRC
