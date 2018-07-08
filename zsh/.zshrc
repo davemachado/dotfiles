@@ -13,7 +13,7 @@ ZSHRC="$DOTFILES/zsh/zshrc"
 alias zshrc="$EDITOR $ZSHRC"
 
 # Custom Aliases
-CUSTOM_ALIASES="$DOTFILES/zsh/custom_aliases"
+CUSTOM_ALIASES="$HOME/.custom_aliases"
 alias custom="$EDITOR $CUSTOM_ALIASES"
 source $CUSTOM_ALIASES
 
