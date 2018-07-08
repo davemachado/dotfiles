@@ -7,35 +7,35 @@
 [[https://github.com/jwiegley/use-package][use-package]] is a great tool to take the stress out of managing packages.
 
 #+BEGIN_SRC emacs-lisp
-(require 'package)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+  (require 'package)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
-(setq package-enable-at-startup nil)
-(setq package-check-signature nil)
-(package-initialize)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (go-guru auto-complete exec-path-from-shell go-mode helm-swoop magit helm use-package evil-visual-mark-mode evil))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+  (setq package-enable-at-startup nil)
+  (setq package-check-signature nil)
+  (package-initialize)
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(package-selected-packages
+     (quote
+      (go-guru auto-complete exec-path-from-shell go-mode helm-swoop magit helm use-package evil-visual-mark-mode evil))))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   )
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-when-compile
-  (require 'use-package))
-(setq use-package-always-ensure t)
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+  (eval-when-compile
+    (require 'use-package))
+  (setq use-package-always-ensure t)
 #+END_SRC
 
 * Evil Mode
@@ -44,22 +44,25 @@ Emacs is a great operating system, lacking only a decent editor.
 To fix this, we bring Vim keybindings into the picture.
 
 #+BEGIN_SRC emacs-lisp
-;; Standard Vim keybindings
-(use-package evil
-  :config
-  (evil-mode t))
+  ;; Standard Vim keybindings
+  (use-package evil
+    :config
+    (evil-mode t))
+    
+  ;; We need magit to play nice with evil keybindings (j/k, for example)
+  (use-package evil-magit)
 
-;; Vim keybindings for Org mode
-(use-package evil-org
-  :ensure t
-  :after org
-  :config
-  (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook
-            (lambda ()
-              (evil-org-set-key-theme)))
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+  ;; Vim keybindings for Org mode
+  (use-package evil-org
+    :ensure t
+    :after org
+    :config
+    (add-hook 'org-mode-hook 'evil-org-mode)
+    (add-hook 'evil-org-mode-hook
+              (lambda ()
+                (evil-org-set-key-theme)))
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
 #+END_SRC
 
 * Helm
@@ -68,27 +71,29 @@ To fix this, we bring Vim keybindings into the picture.
 much less painful.
 
 #+BEGIN_SRC emacs-lisp
-(use-package helm
-  :diminish helm-mode
-   :init (progn
-           (require 'helm-config)
-           (setq helm-candidate-number-limit 100)
-           ;; From https://gist.github.com/antifuchs/9238468
-           (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
-           helm-input-idle-delay 0.01  ; this actually updates things
-                                       ; reeeelatively quickly.
-           helm-yas-display-key-on-candidate t
-           helm-quick-update t)
-           (helm-mode)
-           (use-package helm-swoop
-           :bind ("M-i" . helm-swoop)))
-   :bind (("C-x b" . helm-mini)
-          ("C-h a" . helm-apropos)
-          ("M-y" . helm-show-kill-ring)
-          ("M-x" . helm-M-x)
-          ("C-x C-f" . helm-find-files))
-   :config (define-key helm-map (kbd "TAB" ) 'helm-execute-persistent-action ))
-(ido-mode -1)
+  (use-package helm
+    :diminish helm-mode
+     :init (progn
+             (require 'helm-config)
+             (setq helm-candidate-number-limit 100)
+             ;; From https://gist.github.com/antifuchs/9238468
+             (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
+             helm-input-idle-delay 0.01  ; this actually updates things
+                                         ; reeeelatively quickly.
+             helm-yas-display-key-on-candidate t
+             helm-quick-update t)
+             (helm-mode)
+             (use-package helm-swoop
+             :bind ("M-i" . helm-swoop)))
+     :bind (("C-x b" . helm-mini)
+            ("C-h a" . helm-apropos)
+            ("M-y" . helm-show-kill-ring)
+            ("M-x" . helm-M-x)
+            ("C-x C-f" . helm-find-files))
+     :config (define-key helm-map (kbd "TAB" ) 'helm-execute-persistent-action ))
+  
+  ;; If we use Helm, we do not want ido coming in to mess anything up 
+  (ido-mode -1)
 #+END_SRC
 
 * Magit
@@ -97,7 +102,54 @@ much less painful.
 with Git to Emacs. 
 
 #+BEGIN_SRC emacs-lisp
-(use-package magit)
+  (use-package magit
+    :config
+    (setq git-commit-summary-max-length 50))
+#+END_SRC
+
+* Engine Mode
+  
+[[https://github.com/my/engine-mode][Engine Mode]] defines and queries search engines through Emacs.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package engine-mode
+    :config
+    (engine-mode t)
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s"
+    :keybinding "d")
+
+  (defengine github
+    "https://github.com/search?ref=simplesearch&q=%s"
+    :keybinding "h")
+
+  (defengine google
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+    :keybinding "g")
+
+  (defengine rfcs
+    "http://pretty-rfc.herokuapp.com/search?q=%s")
+
+  (defengine stack-overflow
+    "https://stackoverflow.com/search?q=%s"
+    :keybinding "s")
+
+  (defengine wikipedia
+    "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
+    :keybinding "w")
+
+  (defengine wiktionary
+    "https://www.wikipedia.org/search-redirect.php?family=wiktionary&language=en&go=Go&search=%s")
+
+  (defengine youtube
+    "https://www.youtube.com/results?search_query=%s"
+    :keybinding "y")
+    
+  (defengine golang
+    "https://golang.org/search?q=%s"
+    :keybinding "l")
+    
+  (engine/set-keymap-prefix (kbd "C-c s")))
 #+END_SRC
 
 * Backups
@@ -105,8 +157,8 @@ with Git to Emacs.
 Keep all backup and auto-save files in one easy-to-find directory.
 
 #+BEGIN_SRC emacs-lisp
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 #+END_SRC
 
 * Themes
@@ -116,16 +168,70 @@ themes depending on the time of day. Great for late-night working when a
 light theme would be too bright.
 
 #+BEGIN_SRC emacs-lisp
-;; Only load a theme if we are using GUI Emacs
-(when (display-graphic-p)
-(use-package apropospriate-theme)
-(use-package theme-changer
-  :init
-  (setq calendar-location-name "New York, NY"
-           calendar-latitude 41.8
-           calendar-longitude -73.59)
-  :config
-  (change-theme 'apropospriate-light 'apropospriate-dark)))
+  ;; Only load a theme if we are using GUI Emacs
+  (when (display-graphic-p)
+  (use-package apropospriate-theme)
+   (use-package theme-changer
+     :init
+     (setq calendar-location-name "New York, NY"
+              calendar-latitude 41.8
+              calendar-longitude -73.59)
+     :config
+     (change-theme 'apropospriate-light 'apropospriate-dark)))
+#+END_SRC
+
+* Fonts
+  
+When resizing text, I want to resize all text, not just the current buffer.
+These new functions allow me to do this.
+
+#+BEGIN_SRC emacs-lisp
+  (setq my/default-font "Menlo")
+  (setq my/default-font-size 14)
+  (setq my/current-font-size my/default-font-size)
+  (setq my/font-change-increment 1.1)
+
+  (defun my/font-code ()
+    "Return a string representing the current font (like \"Inconsolata-14\")."
+    (concat my/default-font "-" (number-to-string my/current-font-size)))
+
+  (defun my/set-font-size ()
+    "Set the font to `my/default-font' at `my/current-font-size'.
+  Set that for the current frame, and also make it the default for
+  other, future frames."
+    (let ((font-code (my/font-code)))
+      (add-to-list 'default-frame-alist (cons 'font font-code))
+      (set-frame-font font-code)))
+
+  (defun my/reset-font-size ()
+    "Change font size back to `my/default-font-size'."
+    (interactive)
+    (setq my/current-font-size my/default-font-size)
+    (my/set-font-size))
+
+  (defun my/increase-font-size ()
+    "Increase current font size by a factor of `my/font-change-increment'."
+    (interactive)
+    (setq my/current-font-size
+          (ceiling (* my/current-font-size my/font-change-increment)))
+    (my/set-font-size))
+
+  (defun my/decrease-font-size ()
+    "Decrease current font size by a factor of
+  `my/font-change-increment', down to a minimum size of 1."
+    (interactive)
+    (setq my/current-font-size
+          (max 1
+               (floor (/ my/current-font-size my/font-change-increment))))
+    (my/set-font-size))
+
+  (define-key global-map (kbd "C-)") 'my/reset-font-size)
+  (define-key global-map (kbd "C-+") 'my/increase-font-size)
+  (define-key global-map (kbd "C-=") 'my/increase-font-size)
+  (define-key global-map (kbd "C-_") 'my/decrease-font-size)
+  (define-key global-map (kbd "C--") 'my/decrease-font-size)
+
+  (my/reset-font-size)
 #+END_SRC
 
 * Display Preferences
@@ -133,60 +239,127 @@ light theme would be too bright.
 As with any configuration, there are always display settings to tweak.
 
 #+BEGIN_SRC emacs-lisp
-;; Knowing the time is very handy
-(display-time)
-(setq display-time-format "%I:%M")
+  ;; Knowing the time is very handy
+  (display-time)
+  (setq display-time-format "%I:%M")
 
-;; Hurts my ears
-(setq ring-bell-function 'ignore)
+  ;; Hurts my ears
+  (setq ring-bell-function 'ignore)
 
-;; Set font to 13pt
-(set-face-attribute 'default nil :height 110 :width 'normal)
+  ;; Always display line and column numbers
+  (setq line-number-mode t)
+  (setq column-number-mode t)
 
-;; Always display line and column numbers
-(setq line-number-mode t)
-(setq column-number-mode t)
+  ;; Turn off the blinking cursor
+  (blink-cursor-mode -1)
 
-;; Turn off the blinking cursor
-(blink-cursor-mode -1)
+  ;; Enable show parenthesis
+  (show-paren-mode t)
 
-;; Enable show parenthesis
-(show-paren-mode t)
+  ;; Highlight current line
+  (when window-system
+  (global-hl-line-mode t))
 
-;; Highlight current line
-(global-hl-line-mode t)
+  ;; Disable toolbar
+  (tool-bar-mode -1)
 
-;; Disable toolbar
-(tool-bar-mode -1)
+  ;; Disable menubar
+  (menu-bar-mode -1)
 
-;; Disable menubar
-(menu-bar-mode -1)
+  ;; Disable scrollbar
+  (toggle-scroll-bar -1) 
 
-;; Disable scrollbar
-(toggle-scroll-bar -1) 
+  ;; Disable the splash screen
+  (setq inhibit-splash-screen t)
 
-;; Disable the splash screen
-(setq inhibit-splash-screen t)
+  ;; Open to fullscreen when loading GUI Emacs
+  (when (display-graphic-p)
+   (toggle-frame-fullscreen))
 
+  ;; If I close the file or close the editor, then later re-open it,
+  ;; point will be at the last place I visited.
+  (save-place-mode t)
+  (setq vc-follow-symlinks nil)
+
+  ;; Never use tabs. Tabs are the devil’s whitespace.
+  (setq-default indent-tabs-mode nil)
+    
+  ;; "... has running process, kill buffer anyways?" is very annoying
+  (setq confirm-kill-processes nil)
+  
+  ;; Shell and emacs env variable values can differ on OS X, so sync them
+  (use-package exec-path-from-shell
+    :init
+    (exec-path-from-shell-initialize))
+    
+  ;; Scroll the compilation window to the bottom when complete
+  (setq compilation-scroll-output t)
+  
+  ;; Tabs default to 8 characters. I do not need that many.
+  (setq-default tab-width 2)
+  
+  ;; I hopefully think I know what I am doing, so no warnings please
+  (setq large-file-warning-threshold nil)
+
+  ;; Move files to trash when deleting
+  (setq delete-by-moving-to-trash t)
+  
+  ;; Transparently open compressed files
+  (auto-compression-mode t)
+  
+  ;; Save those precious keystrokes
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  
+  ;; Remove text in active region if inserting text
+  (delete-selection-mode 1)
 #+END_SRC
 
 * Org Mode
-
+  
 I love [[https://orgmode.org/][Org mode]] - the power of an editor and note taker combined into one.
 
 #+BEGIN_SRC emacs-lisp
-;; Set Org mode TODO sequence
-(use-package org
-    :mode ("\\.org\\'" . org-mode)
-    :bind (("C-c l" . org-store-link)
-           ("C-c a" . org-agenda))
-    :config
-    (progn 
-    ;; Add more arguments for todo org mode
-    (setq org-todo-keywords
-        '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
-    ;; Set closed time to done when in org mode
-    (setq org-log-done 'time)))
+  ;; Set Org mode TODO sequence
+  (use-package org
+      :mode ("\\.org\\'" . org-mode)
+      :bind (("C-c l" . org-store-link)
+             ("C-c a" . org-agenda))
+      :config
+      (progn
+      ;; Add more arguments for todo org mode
+      (setq org-todo-keywords
+          '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+      ;; Set closed time to done when in org mode
+      (setq org-log-done 'time)
+      (setq org-src-fontify-natively t)
+      (setq org-html-postamble nil)
+      (setq org-cycle-separator-lines -2)
+      (use-package htmlize)
+      (add-hook 'org-mode-hook 'flyspell-mode)))
+
+  ;; Quickly edit Emacs config
+  (defun my/visit-emacs-config ()
+    (interactive)
+    (find-file "~/.dotfiles/emacs/config.org"))
+  (global-set-key (kbd "C-c e") 'my/visit-emacs-config)
+  
+  (setq org-default-notes-file "~/Dropbox/emacs/inbox.org")
+  (defun my/visit-inbox ()
+    (interactive)
+    (find-file org-default-notes-file))
+  ;; Quickly visit the inbox
+  (global-set-key (kbd "C-c t") 'my/visit-inbox)
+
+  (global-set-key (kbd "C-c c") 'org-capture)
+
+  ;; (setq org-capture-templates
+  ;;    '(("k"           ; hotkey
+  ;;       "Todo list item" ; name
+  ;;       entry            ; type
+  ;;       ; heading type and title
+  ;;       (file+headline org-default-notes-file "Tasks")
+  ;;       "TODO %?\n %i\n   %a") ; template
+  ;;      ))
 #+END_SRC
 
 * Go Settings
@@ -194,53 +367,27 @@ I love [[https://orgmode.org/][Org mode]] - the power of an editor and note take
 I love Go. :gopher-dance:
 
 #+BEGIN_SRC emacs-lisp
-;; Standard Go things like syntax highlighting
-(use-package go-mode
-    :init
-    (setq gofmt-command "goimports")
-    (add-hook 'before-save-hook 'gofmt-before-save))
+  ;; Standard Go things like syntax highlighting
+  (use-package go-mode
+      :init
+      (setq gofmt-command "goimports")
+      (add-hook 'before-save-hook 'gofmt-before-save))
 
-;; Standard auto-complete package
-(use-package auto-complete)
-(defun auto-complete-for-go ()
-  (auto-complete-mode 1)
-    (auto-complete-mode 1))
+  ;; Standard auto-complete package
+  (use-package auto-complete)
+  (defun auto-complete-for-go ()
+    (auto-complete-mode 1)
+      (auto-complete-mode 1))
 
 
-;; More complete auto-complete for Go-specific things
-(use-package go-autocomplete
-    :config
-    (add-hook 'go-mode-hook 'auto-complete-for-go)
-    (with-eval-after-load 'go-mode
-        (require 'go-autocomplete)))
+  ;; More complete auto-complete for Go-specific things
+  (use-package go-autocomplete
+      :config
+      (add-hook 'go-mode-hook 'auto-complete-for-go)
+      (with-eval-after-load 'go-mode
+          (require 'go-autocomplete)))
 
-;; Go source code analysis tool
-(use-package go-guru
-  :demand t)
-#+END_SRC
-
-* Odds and Ends
-
-The usual random, one-off tweaks.
-
-#+BEGIN_SRC emacs-lisp
-;; I hopefully think I know what I am doing, so no warnings please
-(setq large-file-warning-threshold nil)
-
-;; Move files to trash when deleting
-(setq delete-by-moving-to-trash t)
-
-;; Transparently open compressed files
-(auto-compression-mode t)
-
-;; Save those precious keystrokes
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-;; Remove text in active region if inserting text
-(delete-selection-mode 1)
-
-;; Shell and emacs env variable values can differ on OS X, so sync them
-(use-package exec-path-from-shell
-  :init
-  (exec-path-from-shell-initialize))
+  ;; Go source code analysis tool
+  (use-package go-guru
+    :demand t)
 #+END_SRC
