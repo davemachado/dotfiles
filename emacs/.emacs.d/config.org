@@ -335,31 +335,39 @@ I love [[https://orgmode.org/][Org mode]] - the power of an editor and note take
       (setq org-html-postamble nil)
       (setq org-cycle-separator-lines -2)
       (use-package htmlize)
+      (add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
+      (add-hook 'org-mode-hook 'turn-on-auto-fill)
       (add-hook 'org-mode-hook 'flyspell-mode)))
 
-  ;; Quickly edit Emacs config
+  (setq my/emacs-config-file "~/.emacs.d/config.org")
+  (setq my/journal-file "~/Dropbox/emacs/journal.org")
+  (setq org-default-notes-file "~/Dropbox/emacs/inbox.org")
+
+  ;; Quickly visit config
   (defun my/visit-emacs-config ()
     (interactive)
-    (find-file "~/.dotfiles/emacs/config.org"))
+    (find-file my/emacs-config-file))
   (global-set-key (kbd "C-c e") 'my/visit-emacs-config)
   
-  (setq org-default-notes-file "~/Dropbox/emacs/inbox.org")
+  ;; Quickly visit journal
+  (defun my/visit-journal ()
+    (interactive)
+    (find-file my/journal-file))
+  (global-set-key (kbd "C-c j") 'my/visit-journal)
+ 
+  ;; Quickly visit org-mode inbox
   (defun my/visit-inbox ()
     (interactive)
     (find-file org-default-notes-file))
-  ;; Quickly visit the inbox
   (global-set-key (kbd "C-c t") 'my/visit-inbox)
 
+  ;; Define org-capture capture templates
   (global-set-key (kbd "C-c c") 'org-capture)
-
-  ;; (setq org-capture-templates
-  ;;    '(("k"           ; hotkey
-  ;;       "Todo list item" ; name
-  ;;       entry            ; type
-  ;;       ; heading type and title
-  ;;       (file+headline org-default-notes-file "Tasks")
-  ;;       "TODO %?\n %i\n   %a") ; template
-  ;;      ))
+  (setq org-capture-templates
+    '(("t" "Todo" entry (file+headline org-default-notes-file "Inbox")
+      "* TODO %?\n%u%a")
+    ("j" "Journal" entry (file+olp+datetree my/journal-file)
+      "* %?\nEntered on %U\n  %i\n  %a")))
 #+END_SRC
 
 * Go Settings
