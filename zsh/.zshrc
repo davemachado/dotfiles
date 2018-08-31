@@ -56,7 +56,6 @@ export GEM_HOME=$HOME/.gem
 # Add Z to env
 . $HOME/.z.sh
 
-eval "$(rbenv init -)"
 alias svr="ssh dev -t \"tmux attach || tmux\""
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

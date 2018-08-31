@@ -4,7 +4,7 @@ alias vim="nvim"
 alias vi="nvim"
 alias v=vim
 
-alias temacs='$EDITOR --no-window-system'
+alias temacs='emacs --no-window-system'
 alias oew=emacs
 alias oe=temacs
 

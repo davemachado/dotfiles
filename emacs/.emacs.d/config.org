@@ -365,7 +365,7 @@ I love [[https://orgmode.org/][Org mode]] - the power of an editor and note take
   (global-set-key (kbd "C-c c") 'org-capture)
   (setq org-capture-templates
     '(("t" "Todo" entry (file+headline org-default-notes-file "Inbox")
-      "* TODO %?\n%u%a")
+      "* TODO %?\n%u\n%a")
     ("j" "Journal" entry (file+olp+datetree my/journal-file)
       "* %?\nEntered on %U\n  %i\n  %a")))
 #+END_SRC
