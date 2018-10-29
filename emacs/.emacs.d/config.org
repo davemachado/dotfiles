@@ -273,8 +273,8 @@ As with any configuration, there are always display settings to tweak.
   (setq inhibit-splash-screen t)
 
   ;; Open to fullscreen when loading GUI Emacs
-  (when (display-graphic-p)
-   (toggle-frame-fullscreen))
+  ;;(when (display-graphic-p)
+  ;; (toggle-frame-fullscreen))
 
   ;; If I close the file or close the editor, then later re-open it,
   ;; point will be at the last place I visited.
