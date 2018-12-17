@@ -7,7 +7,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (go-autocomplete go-guru auto-complete exec-path-from-shell go-mode helm-swoop magit helm use-package evil-visual-mark-mode evil))))
+    (flycheck go-autocomplete go-guru auto-complete exec-path-from-shell go-mode helm-swoop magit helm use-package evil-visual-mark-mode evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

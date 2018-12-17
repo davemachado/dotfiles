@@ -48,7 +48,7 @@ To fix this, we bring Vim keybindings into the picture.
   (use-package evil
     :config
     (evil-mode t))
-    
+
   ;; We need magit to play nice with evil keybindings (j/k, for example)
   (use-package evil-magit)
 
@@ -63,6 +63,9 @@ To fix this, we bring Vim keybindings into the picture.
                 (evil-org-set-key-theme)))
     (require 'evil-org-agenda)
     (evil-org-agenda-set-keys))
+  (use-package flycheck
+    :ensure t
+    :init (global-flycheck-mode))
 #+END_SRC
 
 * Helm
@@ -83,6 +86,8 @@ much less painful.
              helm-yas-display-key-on-candidate t
              helm-quick-update t)
              (helm-mode)
+             (use-package helm-descbinds
+             :init (helm-descbinds-mode))
              (use-package helm-swoop
              :bind ("M-i" . helm-swoop)))
      :bind (("C-x b" . helm-mini)
@@ -90,16 +95,18 @@ much less painful.
             ("M-y" . helm-show-kill-ring)
             ("M-x" . helm-M-x)
             ("C-x C-f" . helm-find-files))
-     :config (define-key helm-map (kbd "TAB" ) 'helm-execute-persistent-action ))
-  
-  ;; If we use Helm, we do not want ido coming in to mess anything up 
+     :config (define-key helm-map (kbd "TAB" ) 'helm-execute-persistent-action )
+             (global-set-key (kbd "C-c h") 'helm-command-prefix)
+             (global-unset-key (kbd "C-x c")))
+
+  ;; If we use Helm, we do not want ido coming in to mess anything up
   (ido-mode -1)
 #+END_SRC
 
 * Magit
 
 [[https://github.com/magit/magit][Magit]] brings amazing interactivity
-with Git to Emacs. 
+with Git to Emacs.
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
@@ -108,7 +115,7 @@ with Git to Emacs.
 #+END_SRC
 
 * Engine Mode
-  
+
 [[https://github.com/my/engine-mode][Engine Mode]] defines and queries search engines through Emacs.
 
 #+BEGIN_SRC emacs-lisp
@@ -144,11 +151,11 @@ with Git to Emacs.
   (defengine youtube
     "https://www.youtube.com/results?search_query=%s"
     :keybinding "y")
-    
+
   (defengine golang
     "https://golang.org/search?q=%s"
     :keybinding "l")
-    
+
   (engine/set-keymap-prefix (kbd "C-c s")))
 #+END_SRC
 
@@ -181,7 +188,7 @@ light theme would be too bright.
 #+END_SRC
 
 * Fonts
-  
+
 When resizing text, I want to resize all text, not just the current buffer.
 These new functions allow me to do this.
 
@@ -264,10 +271,10 @@ As with any configuration, there are always display settings to tweak.
   (tool-bar-mode -1)
 
   ;; Disable menubar
-  (menu-bar-mode -1)
+  (menu-bar-mode t)
 
   ;; Disable scrollbar
-  (toggle-scroll-bar -1) 
+  (toggle-scroll-bar -1)
 
   ;; Disable the splash screen
   (setq inhibit-splash-screen t)
@@ -283,39 +290,39 @@ As with any configuration, there are always display settings to tweak.
 
   ;; Never use tabs. Tabs are the devil’s whitespace.
   (setq-default indent-tabs-mode nil)
-    
+
   ;; "... has running process, kill buffer anyways?" is very annoying
   (setq confirm-kill-processes nil)
-  
+
   ;; Shell and emacs env variable values can differ on OS X, so sync them
   (use-package exec-path-from-shell
     :init
     (exec-path-from-shell-initialize))
-    
+
   ;; Scroll the compilation window to the bottom when complete
   (setq compilation-scroll-output t)
-  
+
   ;; Tabs default to 8 characters. I do not need that many.
   (setq-default tab-width 2)
-  
+
   ;; I hopefully think I know what I am doing, so no warnings please
   (setq large-file-warning-threshold nil)
 
   ;; Move files to trash when deleting
   (setq delete-by-moving-to-trash t)
-  
+
   ;; Transparently open compressed files
   (auto-compression-mode t)
-  
+
   ;; Save those precious keystrokes
   (defalias 'yes-or-no-p 'y-or-n-p)
-  
+
   ;; Remove text in active region if inserting text
   (delete-selection-mode 1)
 #+END_SRC
 
 * Org Mode
-  
+
 I love [[https://orgmode.org/][Org mode]] - the power of an editor and note taker combined into one.
 
 #+BEGIN_SRC emacs-lisp
@@ -348,13 +355,13 @@ I love [[https://orgmode.org/][Org mode]] - the power of an editor and note take
     (interactive)
     (find-file my/emacs-config-file))
   (global-set-key (kbd "C-c e") 'my/visit-emacs-config)
-  
+
   ;; Quickly visit journal
   (defun my/visit-journal ()
     (interactive)
     (find-file my/journal-file))
   (global-set-key (kbd "C-c j") 'my/visit-journal)
- 
+
   ;; Quickly visit org-mode inbox
   (defun my/visit-inbox ()
     (interactive)
@@ -371,7 +378,7 @@ I love [[https://orgmode.org/][Org mode]] - the power of an editor and note take
 #+END_SRC
 
 * Go Settings
-  
+
 I love Go. :gopher-dance:
 
 #+BEGIN_SRC emacs-lisp
