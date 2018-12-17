@@ -286,7 +286,10 @@ As with any configuration, there are always display settings to tweak.
   ;; If I close the file or close the editor, then later re-open it,
   ;; point will be at the last place I visited.
   (save-place-mode t)
-  (setq vc-follow-symlinks nil)
+  
+  ;; Always follow symlinks to avoid the annoying
+  ;; "Symbolic link to Git-controlled source file" prompt
+  (setq vc-follow-symlinks t)
 
   ;; Never use tabs. Tabs are the devil’s whitespace.
   (setq-default indent-tabs-mode nil)
