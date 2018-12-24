@@ -338,7 +338,7 @@ I love [[https://orgmode.org/][Org mode]] - the power of an editor and note take
       (progn
       ;; Add more arguments for todo org mode
       (setq org-todo-keywords
-          '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+          '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
       ;; Set closed time to done when in org mode
       (setq org-log-done 'time)
       (setq org-src-fontify-natively t)
@@ -349,35 +349,79 @@ I love [[https://orgmode.org/][Org mode]] - the power of an editor and note take
       (add-hook 'org-mode-hook 'turn-on-auto-fill)
       (add-hook 'org-mode-hook 'flyspell-mode)))
 
-  (setq my/emacs-config-file "~/.emacs.d/config.org")
-  (setq my/journal-file "~/Dropbox/emacs/journal.org")
-  (setq org-default-notes-file "~/Dropbox/emacs/inbox.org")
+      (setq my/emacs-config-file "~/.emacs.d/config.org")
+      (setq my/journal-file "~/Dropbox/emacs/journal.org")
+      (setq org-default-notes-file "~/Dropbox/emacs/inbox.org")
+      (setq my/org-gtd-file "~/Dropbox/emacs/gtd.org")
+      (setq my/org-someday-file "~/Dropbox/emacs/someday.org")
+      (setq my/org-tickler-file "~/Dropbox/emacs/tickler.org")
 
-  ;; Quickly visit config
-  (defun my/visit-emacs-config ()
-    (interactive)
-    (find-file my/emacs-config-file))
-  (global-set-key (kbd "C-c e") 'my/visit-emacs-config)
+      (setq org-agenda-files '("~/Dropbox/emacs/inbox.org"
+                               "~/Dropbox/emacs/gtd.org"
+                               "~/Dropbox/emacs/tickler.org"))    
+                         
+      (setq org-agenda-custom-commands 
+        '(("w" "At Work" tags-todo "@work"
+            ((org-agenda-overriding-header "Work")
+            (org-agenda-skip-function #'my/org-agenda-skip-all-siblings-but-first)))))
 
-  ;; Quickly visit journal
-  (defun my/visit-journal ()
-    (interactive)
-    (find-file my/journal-file))
-  (global-set-key (kbd "C-c j") 'my/visit-journal)
+      (defun my/org-agenda-skip-all-siblings-but-first ()
+        "Skip all but the first non-done entry."
+        (let (should-skip-entry)
+            (unless (org-current-is-todo)
+            (setq should-skip-entry t))
+            (save-excursion
+            (while (and (not should-skip-entry) (org-goto-sibling t))
+                (when (org-current-is-todo)
+                (setq should-skip-entry t))))
+            (when should-skip-entry
+            (or (outline-next-heading)
+                (goto-char (point-max))))))
 
-  ;; Quickly visit org-mode inbox
-  (defun my/visit-inbox ()
-    (interactive)
-    (find-file org-default-notes-file))
-  (global-set-key (kbd "C-c t") 'my/visit-inbox)
+      (defun org-current-is-todo ()
+        (string= "TODO" (org-get-todo-state)))
 
-  ;; Define org-capture capture templates
-  (global-set-key (kbd "C-c c") 'org-capture)
-  (setq org-capture-templates
-    '(("t" "Todo" entry (file+headline org-default-notes-file "Inbox")
-      "* TODO %?\n%u\n%a")
-    ("j" "Journal" entry (file+olp+datetree my/journal-file)
-      "* %?\nEntered on %U\n  %i\n  %a")))
+      (setq org-refile-targets '((my/org-gtd-file :maxlevel . 3)
+                                (my/org-someday-file :maxlevel . 1)
+                                (my/org-tickler-file :maxlevel . 2)))     
+
+      ;; Quickly visit config
+      (defun my/visit-emacs-config ()
+        (interactive)
+        (find-file my/emacs-config-file))
+      (global-set-key (kbd "C-c e") 'my/visit-emacs-config)
+
+      ;; Quickly visit journal
+      (defun my/visit-journal ()
+        (interactive)
+        (find-file my/journal-file))
+      (global-set-key (kbd "C-c j") 'my/visit-journal)
+
+      ;; Quickly visit GTD
+      (defun my/visit-todo ()
+        (interactive)
+        (find-file my/org-gtd-file))
+      (global-set-key (kbd "C-c t") 'my/visit-todo)
+
+      ;; Quickly visit inbox
+      (defun my/visit-inbox ()
+        (interactive)
+        (find-file org-default-notes-file))
+      (global-set-key (kbd "C-c i") 'my/visit-inbox)
+
+      ;; Define org-capture capture templates
+      (global-set-key (kbd "C-c c") 'org-capture)
+      (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline org-default-notes-file "Inbox")
+        "* TODO %i%?")
+        ("T" "Tickler" entry (file+headline org-default-notes-file "Ticklers")
+        "* %i%? \n %U")
+        ("j" "Journal" entry (file+olp+datetree my/journal-file)
+        "* %?\nEntered on %U\n  %i\n")))
+      (setq org-tag-alist '((:startgroup . nil)
+                        ("@work" . ?w) ("@home" . ?h)
+                        (:endgroup . nil)
+                        ("laptop" . ?l) ("pc" . ?p)))
 #+END_SRC
 
 * Go Settings
