@@ -25,7 +25,6 @@ alias od='open .'
 alias c=clear
 alias h=history
 alias x=exit
-alias cat=ccat
 alias path='echo -e ${PATH//:/\\n}'
 alias now=date
 alias zs='zsh_stats'

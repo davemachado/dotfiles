@@ -24,7 +24,7 @@ source $LOCAL_ALIASES
 
 alias sourceall="source $CUSTOM_ALIASES;source $ZSHRC;source $LOCAL_ALIASES"
 
-ZSH_THEME="robbyrussell"
+ZSH_THEME="zhann"
 plugins=(git osx web-search tmux taskwarrior jsontools history tmuxinator brew)
 ZSH_TMUX_AUTOSTART=false
 
