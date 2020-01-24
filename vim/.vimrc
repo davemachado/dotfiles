@@ -32,13 +32,21 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 
-"Pathogen
-execute pathogen#infect()
 syntax on 
 filetype plugin indent on
 
 "Plugins
+call plug#begin('~/.vim/plugged')
+
+Plug 'fatih/vim-go'
 let g:go_fmt_command = "goimports"
+
+Plug 'w0rp/ale'
+
+Plug 'preservim/nerdtree'
+map <C-n> :NERDTreeToggle<CR>
+
+call plug#end()
 
 "Template Checker
 " Store skel.* files in $DOTFILES/vim/templates to automatically load

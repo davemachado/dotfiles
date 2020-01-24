@@ -46,9 +46,7 @@ export PATH=$HOME/bin:$PATH
 export PATH=.:$PATH
 
 export GOPATH=$HOME/go
-export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
 
 # Syntax Highlighting installed from Homebrew
 export GEM_HOME=$HOME/.gem
@@ -64,3 +62,4 @@ export PATH="/usr/local/opt/curl/bin:$PATH"
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)

@@ -1,9 +1,3 @@
-alias v="vim"
-alias vvim="\vim"
-alias vim="nvim"
-alias vi="nvim"
-alias v=vim
-
 alias temacs='emacs --no-window-system'
 alias oew=emacs
 alias oe=temacs
@@ -30,6 +24,7 @@ alias now=date
 alias zs='zsh_stats'
 alias trashit='rm -rf ~/.Trash/'
 alias gupdate='git fetch upstream && git rebase upstream/master'
+alias glr='git pull --rebase'
 alias bup='brew update && brew upgrade'
 alias remake="make clean && make"
 
