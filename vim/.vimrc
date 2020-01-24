@@ -44,21 +44,22 @@ call plug#begin('~/.vim/plugged')
 Plug 'fatih/vim-go'
 let g:go_fmt_command = "goimports"
 
-
 Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled = ['go']
-"For Go
+
 Plug 'dense-analysis/ale'
+"This will only work if using language servers
+let g:ale_completion_enabled = 1
+"Needed to tab through completion options
 inoremap <silent><expr> <Tab>
         \ pumvisible() ? "\<C-n>" : "\<TAB>"
 
-"This will only work if using language servers
-let g:ale_completion_enabled = 1
 "Sane defaults that are only set like that sometimes
 set completeopt=menu,menuone,preview,noselect,noinsert
 let g:ale_linters = {
         \ 'go': ['gopls'],
         \}
+map <C-d> :ALEGoToDefinition<CR>
 
 Plug 'preservim/nerdtree'
 map <C-n> :NERDTreeToggle<CR>
