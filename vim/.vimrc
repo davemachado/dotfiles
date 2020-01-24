@@ -35,13 +35,30 @@ noremap <C-k> <C-w>k
 syntax on 
 filetype plugin indent on
 
+"M-x delete-trailing-whitespace
+:nnoremap <silent> <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+
 "Plugins
 call plug#begin('~/.vim/plugged')
 
 Plug 'fatih/vim-go'
 let g:go_fmt_command = "goimports"
 
-Plug 'w0rp/ale'
+
+Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled = ['go']
+"For Go
+Plug 'dense-analysis/ale'
+inoremap <silent><expr> <Tab>
+        \ pumvisible() ? "\<C-n>" : "\<TAB>"
+
+"This will only work if using language servers
+let g:ale_completion_enabled = 1
+"Sane defaults that are only set like that sometimes
+set completeopt=menu,menuone,preview,noselect,noinsert
+let g:ale_linters = {
+        \ 'go': ['gopls'],
+        \}
 
 Plug 'preservim/nerdtree'
 map <C-n> :NERDTreeToggle<CR>
