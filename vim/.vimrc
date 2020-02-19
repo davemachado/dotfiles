@@ -9,7 +9,7 @@ nnoremap <leader>q :q<cr>
 nnoremap <leader>wq :wq<cr>
 nnoremap <leader>copy :%w !pbcopy<cr>
 nnoremap <leader>k gcc
-nnoremap <leader>, :b 
+nnoremap <leader>, :b
 nnoremap <leader>. :bd<cr>
 nnoremap <leader><Space> /MARKER<cr>cw
 
@@ -23,6 +23,11 @@ set expandtab
 set nocompatible
 set ignorecase
 set smartcase
+set hlsearch
+set incsearch
+
+"hi Search ctermbg=DarkMagenta
+"hi Search ctermfg=Red
 
 "Split Screen Controls
 nnoremap <leader>sv :vsplit<cr>
@@ -32,7 +37,7 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 
-syntax on 
+syntax on
 filetype plugin indent on
 
 "M-x delete-trailing-whitespace
@@ -40,6 +45,14 @@ filetype plugin indent on
 
 "Plugins
 call plug#begin('~/.vim/plugged')
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+
+Plug 'altercation/vim-colors-solarized'
+
+Plug 'markonm/traces.vim'
 
 Plug 'fatih/vim-go'
 let g:go_fmt_command = "goimports"
@@ -58,8 +71,14 @@ inoremap <silent><expr> <Tab>
 set completeopt=menu,menuone,preview,noselect,noinsert
 let g:ale_linters = {
         \ 'go': ['gopls'],
-        \}
-map <C-d> :ALEGoToDefinition<CR>
+        \'typescript': ['tsserver'],
+\}
+let g:ale_fixers = {
+        \'typescript' : ['eslint'],
+        \'typescriptreact' : ['eslint'],
+\}
+
+map <C-d> :ALEGoToDefinitionInVSplit<CR>
 
 Plug 'preservim/nerdtree'
 map <C-n> :NERDTreeToggle<CR>
@@ -82,3 +101,6 @@ endf
 if has("autocmd")
     autocmd BufNewFile * call CheckForTemplate()
 endif
+
+let g:airline_theme = 'luna'
+let g:airline_powerline_fonts = 1
