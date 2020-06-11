@@ -53,5 +53,5 @@ alias ping='ping -c 5'
 # Do not wait interval 1 second, go fast #
 alias fastping='ping -c 100 -s.2'
 alias ports='netstat -tulanp'
-alias net='nmap -sn 192.168.1.0/24'
+alias net='nmap -sn 192.168.0.0/24'
 alias xip='curl https://myexternalip.com/raw'

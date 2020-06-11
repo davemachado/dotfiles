@@ -13,6 +13,8 @@ nnoremap <leader>, :b
 nnoremap <leader>. :bd<cr>
 nnoremap <leader><Space> /MARKER<cr>cw
 
+set encoding=utf-8
+
 "General
 set number
 set backspace=2
@@ -25,6 +27,8 @@ set ignorecase
 set smartcase
 set hlsearch
 set incsearch
+set pastetoggle=<F2>
+noremap <F3> :set invnumber<CR>
 
 "hi Search ctermbg=DarkMagenta
 "hi Search ctermfg=Red
@@ -51,6 +55,13 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 
 Plug 'altercation/vim-colors-solarized'
+" Set the background light from 7am to 7pm
+let hour = strftime("%H")
+if 7 <= hour && hour < 19
+  set background=light
+else
+  set background=dark
+endif
 
 Plug 'markonm/traces.vim'
 
@@ -84,6 +95,9 @@ Plug 'preservim/nerdtree'
 map <C-n> :NERDTreeToggle<CR>
 
 call plug#end()
+
+" This needs to come after plug#end
+colorscheme solarized
 
 "Template Checker
 " Store skel.* files in $DOTFILES/vim/templates to automatically load

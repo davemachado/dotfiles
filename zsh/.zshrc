@@ -4,10 +4,20 @@ export PATH=$HOME/bin:$PATH
 # Add pwd to PATH
 export PATH=.:$PATH
 # Add custom homebrew to path
-export PATH=$PATH:$HOME/homebrew/bin:$HOME/homebrew/sbin
+export PATH=$HOME/homebrew/bin:$HOME/homebrew/sbin:$PATH
+# For hombrew coreutils to take higher priority
+export PATH="/Users/drm/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+
+# Keep oodles of command history
+HISTSIZE=1000000
+SAVEHIST=1000000
+setopt APPEND_HISTORY
+
+# Allow tab completion in the middle of a word.
+setopt COMPLETE_IN_WORD
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -112,3 +122,51 @@ source $CUSTOM_ALIASES
 LOCAL_PROFILE="$HOME/.zsh_local_profile"
 alias localzsh="$EDITOR $LOCAL_PROFILE"
 source $LOCAL_PROFILE
+
+function dtm {
+  echo -ne "\033]50;SetProfile=Dark\a"
+  export ITERM_PROFILE="Dark"
+}
+
+function ltm {
+  echo -ne "\033]50;SetProfile=Light\a"
+  export ITERM_PROFILE="Light"
+}
+
+function colorize {
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    val=$(defaults read -g AppleInterfaceStyle 2>/dev/null)
+    if [[ $val != "Dark" ]]; then
+        ltm
+    else
+        dtm
+    fi
+  fi
+}
+colorize
+
+# Avoid unnecessary prompts (avoid slow-down and risk of wrong answer)
+# This option is only supported by GNU coreutils, not by the
+# BSD versions that come with OS X. It’s possible to install
+# GNU coreutils, e.g. with brew install coreutils. To override the builtins,
+# follow the instructions printed by brew info coreutils
+alias cp='cp --backup=numbered'
+alias ln='ln --backup=numbered'
+alias mv='mv -f --backup=numbered'
+
+# Type in a few chars of a command in history and use arrow (up/down) keys to cycle
+# through all commands that start with the typed in chars.
+bindkey "^[[A" history-search-backward
+bindkey "^[[B" history-search-forward
+
+# Vim mode things
+bindkey -v
+bindkey '^r' history-incremental-search-backward
+function zle-line-init zle-keymap-select {
+    RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+    RPS2=$RPS1
+    zle reset-prompt
+}
+zle -N zle-line-init
+zle -N zle-keymap-select
+
