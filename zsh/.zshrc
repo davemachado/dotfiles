@@ -170,3 +170,23 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 
+# BEGIN PROMPT
+function nonzero_return() {
+	RETVAL=$?
+    SIGNAME=$(kill -l ${RETVAL})
+    [ $RETVAL -ne 0 ] && echo "[%{$fg[red]%}EXIT $RETVAL ($SIGNAME)%{$reset_color%}] "
+}
+
+autoload -U colors && colors
+function hgproml {
+  local user="%{$fg[green]%}%n"
+  local at="%{$fg[yellow]%}@"
+  local host="%{$fg[green]%}%m"
+  local dir="%{$fg[blue]%}%c"
+
+  export PS1="\$(nonzero_return)$user$at$host%{$fg[yellow]%}:\$(_scm_prompt) $dir %{$reset_color%}$ "
+  PS2='> '
+  PS4='+ '
+}
+hgproml
+# END PROMPT
