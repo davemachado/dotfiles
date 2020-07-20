@@ -350,15 +350,15 @@ I love [[https://orgmode.org/][Org mode]] - the power of an editor and note take
       (add-hook 'org-mode-hook 'flyspell-mode)))
 
       (setq my/emacs-config-file "~/.emacs.d/config.org")
-      (setq my/journal-file "~/Dropbox/emacs/journal.org")
-      (setq org-default-notes-file "~/Dropbox/emacs/inbox.org")
-      (setq my/org-gtd-file "~/Dropbox/emacs/gtd.org")
-      (setq my/org-someday-file "~/Dropbox/emacs/someday.org")
-      (setq my/org-tickler-file "~/Dropbox/emacs/tickler.org")
+      (setq my/journal-file "~/.org-mode/emacs/journal.org")
+      (setq org-default-notes-file "~/.org-mode/emacs/inbox.org")
+      (setq my/org-gtd-file "~/.org-mode/emacs/gtd.org")
+      (setq my/org-someday-file "~/.org-mode/emacs/someday.org")
+      (setq my/org-tickler-file "~/.org-mode/emacs/tickler.org")
 
-      (setq org-agenda-files '("~/Dropbox/emacs/inbox.org"
-                               "~/Dropbox/emacs/gtd.org"
-                               "~/Dropbox/emacs/tickler.org"))    
+      (setq org-agenda-files '("~/.org-mode/emacs/inbox.org"
+                               "~/.org-mode/emacs/gtd.org"
+                               "~/.org-mode/emacs/tickler.org"))    
                          
       (setq org-agenda-custom-commands 
         '(("w" "At Work" tags-todo "@work"

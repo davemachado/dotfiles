@@ -14,7 +14,8 @@ export ZSH="$HOME/.oh-my-zsh"
 # Keep oodles of command history
 HISTSIZE=1000000
 SAVEHIST=1000000
-setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+#setopt APPEND_HISTORY
 
 # Allow tab completion in the middle of a word.
 setopt COMPLETE_IN_WORD
@@ -58,7 +59,7 @@ ZSH_THEME="zhann"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+#ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
@@ -112,6 +113,10 @@ fi
 
 source $HOME/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/.z.sh
+source $HOME/.command-time.zsh
+ZSH_COMMAND_TIME_MIN_SECONDS=5
+ZSH_COMMAND_TIME_MSG="Execution time: %s"
+ZSH_COMMAND_TIME_COLOR="cyan"
 
 # Version-controlled aliases
 CUSTOM_ALIASES="$HOME/.zsh_aliases"
@@ -162,14 +167,6 @@ bindkey "^[[B" history-search-forward
 # Vim mode things
 bindkey -v
 bindkey '^r' history-incremental-search-backward
-function zle-line-init zle-keymap-select {
-    RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
-    RPS2=$RPS1
-    zle reset-prompt
-}
-zle -N zle-line-init
-zle -N zle-keymap-select
-
 # BEGIN PROMPT
 function nonzero_return() {
 	RETVAL=$?
