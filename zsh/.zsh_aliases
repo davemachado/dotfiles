@@ -15,7 +15,6 @@ alias ~='cd ~'
 alias e=$EDITOR
 alias o=open
 alias oa='open -a'
-alias od='open .'
 alias c=clear
 alias h=history
 alias x=exit

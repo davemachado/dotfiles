@@ -5,6 +5,8 @@ export PATH=$HOME/bin:$PATH
 export PATH=.:$PATH
 # Add custom homebrew to path
 export PATH=$HOME/homebrew/bin:$HOME/homebrew/sbin:$PATH
+# Privacy, please
+export HOMEBREW_NO_ANALYTICS=1
 # For hombrew coreutils to take higher priority
 export PATH="/Users/drm/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 
