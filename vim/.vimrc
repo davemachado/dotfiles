@@ -54,15 +54,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 
-Plug 'altercation/vim-colors-solarized'
-" Set the background light from 7am to 7pm
-let hour = strftime("%H")
-if 7 <= hour && hour < 19
-  set background=light
-else
-  set background=dark
-endif
-
 Plug 'markonm/traces.vim'
 
 Plug 'fatih/vim-go'
@@ -95,9 +86,6 @@ Plug 'preservim/nerdtree'
 map <C-n> :NERDTreeToggle<CR>
 
 call plug#end()
-
-" This needs to come after plug#end
-colorscheme solarized
 
 "Template Checker
 " Store skel.* files in $DOTFILES/vim/templates to automatically load

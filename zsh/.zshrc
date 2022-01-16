@@ -115,7 +115,7 @@ fi
 
 source $HOME/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/.z.sh
-source $HOME/.command-time.zsh
+#source $HOME/.command-time.zsh
 ZSH_COMMAND_TIME_MIN_SECONDS=5
 ZSH_COMMAND_TIME_MSG="Execution time: %s"
 ZSH_COMMAND_TIME_COLOR="cyan"
@@ -178,7 +178,7 @@ function hgproml {
   local host="%{$fg[green]%}%m"
   local dir="%{$fg[blue]%}%c"
 
-  export PS1="\$(nonzero_return)$user$at$host%{$fg[yellow]%}:\$(_scm_prompt) $dir %{$reset_color%}$ "
+  export PS1="\$(nonzero_return)$user$at$host%{$fg[yellow]%}: $dir %{$reset_color%}$ "
   PS2='> '
   PS4='+ '
 }
