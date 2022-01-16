@@ -3,15 +3,15 @@
 export PATH=$HOME/bin:$PATH
 # Add pwd to PATH
 export PATH=.:$PATH
-# Add custom homebrew to path
-export PATH=$HOME/homebrew/bin:$HOME/homebrew/sbin:$PATH
 # Privacy, please
 export HOMEBREW_NO_ANALYTICS=1
-# For hombrew coreutils to take higher priority
-export PATH="/Users/drm/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+# For Rust
+export PATH=$PATH:$HOME/.cargo/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+
+setopt nosharehistory
 
 # Keep oodles of command history
 HISTSIZE=1000000
@@ -87,7 +87,7 @@ ZSH_THEME="zhann"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git osx brew)
+plugins=(brew git osx)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -194,7 +194,7 @@ alias bp='$EDITOR ~/.zshrc'
 alias src='source ~/.zshrc'
 alias vp='$EDITOR ~/.vimrc'
 alias tp='$EDITOR ~/.tmux.conf'
-alias ls='ls -gh'
+alias ls='ls -gGh'
 alias l='ls'
 alias sl=ls
 alias lf='find . -maxdepth 1 -type f'
