@@ -120,11 +120,6 @@ ZSH_COMMAND_TIME_MIN_SECONDS=5
 ZSH_COMMAND_TIME_MSG="Execution time: %s"
 ZSH_COMMAND_TIME_COLOR="cyan"
 
-# Version-controlled aliases
-CUSTOM_ALIASES="$HOME/.zsh_aliases"
-alias custom="$EDITOR $CUSTOM_ALIASES"
-source $CUSTOM_ALIASES
-
 # Local profile (not part of VCS)
 LOCAL_PROFILE="$HOME/.zsh_local_profile"
 alias localzsh="$EDITOR $LOCAL_PROFILE"
@@ -189,3 +184,61 @@ function hgproml {
 }
 hgproml
 # END PROMPT
+
+# ALIASES
+alias temacs='emacs --no-window-system'
+alias oew=emacs
+alias oe=temacs
+
+alias bp='$EDITOR ~/.zshrc'
+alias src='source ~/.zshrc'
+alias vp='$EDITOR ~/.vimrc'
+alias tp='$EDITOR ~/.tmux.conf'
+alias ls='ls -gh'
+alias l='ls'
+alias sl=ls
+alias lf='find . -maxdepth 1 -type f'
+alias ldir='ls -d */'
+alias ~='cd ~'
+alias e=$EDITOR
+alias o=open
+alias oa='open -a'
+alias c=clear
+alias h=history
+alias x=exit
+alias path='echo -e ${PATH//:/\\n}'
+alias now=date
+alias zs='zsh_stats'
+alias trashit='rm -rf ~/.Trash/'
+alias gupdate='git fetch upstream && git rebase upstream/master'
+alias glr='git pull --rebase'
+alias bup='brew update && brew upgrade'
+alias remake="make clean && make"
+
+
+alias p2='python'
+alias p3='python3'
+alias mongod='mongod --dbpath $HOME/.mongodb/data'
+
+# Web Shortcuts
+alias chrome="open -a \"Google Chrome\""
+alias gh="chrome http://github.com/davemachado"
+alias email="chrome http://mail.google.com"
+
+alias al=chives
+
+# Scripts
+alias mkgo=". mkgo"
+alias vpnc="osascript ~/bin/vpn-connect"
+alias vpnd="osascript ~/bin/vpn-disconnect"
+
+alias svr="ssh svr -t \"tmux attach || tmux\" -u"
+
+# Networking
+# Stop after sending count ECHO_REQUEST packets #
+alias ping='ping -c 5'
+# Do not wait interval 1 second, go fast #
+alias fastping='ping -c 100 -s.2'
+alias ports='netstat -tulanp'
+alias net='nmap -sn 192.168.0.0/24'
+alias xip='curl https://myexternalip.com/raw'
