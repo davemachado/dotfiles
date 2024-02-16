@@ -242,3 +242,13 @@ alias fastping='ping -c 100 -s.2'
 alias ports='netstat -tulanp'
 alias net='nmap -sn 192.168.0.0/24'
 alias xip='curl https://myexternalip.com/raw'
+
+listen() {
+    if [ $# -eq 0 ]; then
+        sudo lsof -iTCP -sTCP:LISTEN -n -P
+    elif [ $# -eq 1 ]; then
+        sudo lsof -iTCP -sTCP:LISTEN -n -P | grep -i --color $1
+    else
+        echo "Usage: listening [pattern]"
+    fi
+}
